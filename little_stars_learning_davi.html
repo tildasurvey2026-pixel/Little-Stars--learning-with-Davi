@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#6c63ff">
+<title>Little Stars Learning with Davi</title>
+<style>
+:root{--purple:#6c63ff;--ink:#24233a;--bg:#f7f7ff;--card:#fff}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(135deg,#6c63ff,#a66cff);color:#fff;padding:24px 18px 20px;border-radius:0 0 26px 26px}
+header h1{margin:0;font-size:27px}header p{margin:7px 0 0;opacity:.95}
+main{max-width:760px;margin:auto;padding:16px}
+nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:4px 0 16px}
+button{font:inherit;cursor:pointer;border:0;border-radius:15px;padding:13px 12px;font-weight:700}
+nav button{background:#fff;color:var(--ink);box-shadow:0 2px 8px #2221}
+nav button.active{background:var(--purple);color:#fff}
+.panel{background:var(--card);padding:18px;border-radius:20px;box-shadow:0 3px 14px #24233a0d}
+h2{margin:0 0 8px;font-size:22px} .muted{color:#69687b}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin-top:15px}
+.tile{background:#f0efff;border-radius:16px;padding:16px 8px;text-align:center;min-height:104px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.tile strong{font-size:34px;color:#5b50e6}.tile span{font-size:14px}
+.big{font-size:78px;font-weight:800;text-align:center;margin:12px 0;color:var(--purple)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.primary{background:var(--purple);color:#fff}.soft{background:#eeedff;color:#4f46d8}
+.choice{display:block;width:100%;margin:8px 0;background:#f0efff;color:var(--ink);text-align:left}
+#feedback{font-weight:700;margin-top:12px;min-height:24px}
+footer{text-align:center;color:#77758b;font-size:12px;padding:20px}
+.color-dot{width:32px;height:32px;border-radius:50%;display:block;margin:0 auto 7px;border:2px solid #0001}
+</style>
+</head>
+<body>
+<header><h1>⭐ Little Stars Learning</h1><p>Learn, Play, and Shine with Davi!</p></header>
+<main>
+<nav>
+<button class="active" data-page="home">🏠 Home</button>
+<button data-page="abc">🔤 ABC & Phonics</button>
+<button data-page="numbers">🔢 Numbers</button>
+<button data-page="colours">🎨 Colours</button>
+<button data-page="quiz">🧠 Fun Quiz</button>
+</nav>
+<section id="content" class="panel"></section>
+</main>
+<footer>Made for little learners • Adult guidance recommended</footer>
+<script>
+const content=document.getElementById('content');
+const pages=[...document.querySelectorAll('nav button')];
+const letters=[['A','a','Apple 🍎'],['B','b','Ball ⚽'],['C','c','Cat 🐱'],['D','d','Dog 🐶'],['E','e','Elephant 🐘'],['F','f','Fish 🐟'],['G','g','Grapes 🍇'],['H','h','House 🏠'],['I','i','Ice cream 🍦'],['J','j','Juice 🧃'],['K','k','Kite 🪁'],['L','l','Lion 🦁'],['M','m','Moon 🌙'],['N','n','Nest 🪺'],['O','o','Orange 🍊'],['P','p','Pen 🖊️'],['Q','q','Queen 👑'],['R','r','Rainbow 🌈'],['S','s','Sun ☀️'],['T','t','Tree 🌳'],['U','u','Umbrella ☂️'],['V','v','Van 🚐'],['W','w','Whale 🐳'],['X','x','Xylophone 🎼'],['Y','y','Yo-yo 🪀'],['Z','z','Zebra 🦓']];
+const colours=[['Red','#f04444'],['Blue','#3485f5'],['Yellow','#ffd43b'],['Green','#35ad65'],['Purple','#9363d8'],['Orange','#ff922b'],['Pink','#f783ac'],['Black','#252525']];
+let question=0,score=0;
+function go(page){
+ pages.forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+ if(page==='home') content.innerHTML=`<h2>Hello, little stars! 👋</h2><p class="muted">I’m Davi the Little Star. Let’s learn and shine together!</p><div class="cards"><div class="tile"><strong>ABC</strong><span>Letters & words</span></div><div class="tile"><strong>123</strong><span>Count and learn</span></div><div class="tile"><strong>🎨</strong><span>Beautiful colours</span></div><div class="tile"><strong>⭐</strong><span>Try a fun quiz</span></div></div><p>Ask a grown-up to help you explore each section.</p>`;
+ if(page==='abc') content.innerHTML=`<h2>ABC & Words 🔤</h2><p class="muted">Tap a letter to see a word that starts with it.</p><div class="cards">${letters.map(x=>`<button class="tile" onclick="showLetter('${x[0]}')"><strong>${x[0]}</strong><span>${x[2].split(' ')[0]}</span></button>`).join('')}</div><div id="letterDetail" class="big">A</div><p id="letterWord" style="text-align:center;font-size:20px">A is for Apple 🍎</p>`;
+ if(page==='numbers') content.innerHTML=`<h2>Let's Count! 🔢</h2><p class="muted">Tap a number to practise counting.</p><div class="cards">${Array.from({length:10},(_,i)=>`<button class="tile" onclick="showNumber(${i+1})"><strong>${i+1}</strong><span>${'⭐'.repeat(i+1)}</span></button>`).join('')}</div><div id="numberDetail" class="big">1</div><p id="numberWord" style="text-align:center;font-size:20px">One star ⭐</p>`;
+ if(page==='colours') content.innerHTML=`<h2>Learn Colours 🎨</h2><p class="muted">Look at each colour and say its name.</p><div class="cards">${colours.map(c=>`<button class="tile" onclick="showColour('${c[0]}','${c[1]}')"><span class="color-dot" style="background:${c[1]}"></span><span>${c[0]}</span></button>`).join('')}</div><div id="colourDetail" style="text-align:center;margin-top:20px;font-size:22px;font-weight:700">Tap a colour!</div>`;
+ if(page==='quiz') quiz();
+}
+function showLetter(letter){let x=letters.find(a=>a[0]===letter);document.getElementById('letterDetail').textContent=x[0]+' '+x[1];document.getElementById('letterWord').textContent=x[0]+' is for '+x[2]}
+function showNumber(n){document.getElementById('numberDetail').textContent=n;document.getElementById('numberWord').textContent=['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten'][n]+' — '+'⭐'.repeat(n)}
+function showColour(name,hex){document.getElementById('colourDetail').innerHTML=`<span class="color-dot" style="width:70px;height:70px;background:${hex}"></span>${name}!`}
+const qs=[{q:'Which letter starts the word Apple?',a:['A','B','C'],c:0},{q:'What number comes after 2?',a:['1','3','5'],c:1},{q:'Which one is a colour?',a:['Seven','Blue','Cat'],c:1},{q:'Which animal says “meow”?',a:['Dog','Cow','Cat'],c:2},{q:'How many fingers are on one hand?',a:['Five','Two','Ten'],c:0},{q:'Which letter comes first in the alphabet?',a:['Z','A','M'],c:1}];
+function quiz(){let q=qs[question%qs.length];content.innerHTML=`<h2>Fun Quiz 🧠</h2><p class="muted">Question ${(question%qs.length)+1} of ${qs.length} • Score: ${score}</p><h3>${q.q}</h3>${q.a.map((a,i)=>`<button class="choice" onclick="answer(${i})">${a}</button>`).join('')}<div id="feedback"></div><div class="actions"><button class="soft" onclick="question=0;score=0;quiz()">Start again</button></div>`}
+function answer(i){let q=qs[question%qs.length],f=document.getElementById('feedback');if(f.textContent)return;if(i===q.c){f.textContent='🎉 Correct! Well done!';f.style.color='#21864b';score++}else{f.textContent='😊 Good try! The answer is '+q.a[q.c]+'.';f.style.color='#c05b25'}let b=document.createElement('button');b.className='primary';b.textContent='Next question';b.style.marginTop='12px';b.onclick=()=>{question++;quiz()};content.appendChild(b)}
+pages.forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+go('home');
+</script>
+</body>
+</html>
